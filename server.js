@@ -5,7 +5,7 @@ const os = require('os');
 const fs = require('fs');
 
 const app = express();
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 // Map of jobId -> resolve function for interactive stealth pause

@@ -1,4 +1,20 @@
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, shell, dialog } = require('electron');
+const path = require('path');
+const fs = require('fs');
+const os = require('os');
+
+// Error logging for debugging packaged app
+const logFile = path.join(os.homedir(), 'stealth-batch-shot-error.log');
+function logError(err) {
+    const msg = `${new Date().toISOString()} - ${err && err.stack ? err.stack : err}\n`;
+    fs.appendFileSync(logFile, msg);
+    if (app.isReady()) {
+        dialog.showErrorBox('JavaScript Error', err && err.message ? err.message : String(err));
+    }
+}
+
+process.on('uncaughtException', logError);
+process.on('unhandledRejection', logError);
 
 let PORT = null;
 let appReady = false;
