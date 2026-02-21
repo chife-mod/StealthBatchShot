@@ -44,6 +44,20 @@ function maybeCreateWindow() {
     mainWindow.on('closed', () => { mainWindow = null; });
 }
 
+// Explicit cleanup on quit
+app.on('before-quit', () => {
+    if (server) {
+        console.log('Stopping embedded server...');
+        server.close();
+    }
+});
+
+app.on('will-quit', () => {
+    console.log('Quitting app. Ensuring all browser processes are terminated...');
+    // Playwright browsers launched from server.js are child processes and 
+    // should be naturally killed by the OS when the main process exits.
+});
+
 app.whenReady().then(() => {
     appReady = true;
     maybeCreateWindow();

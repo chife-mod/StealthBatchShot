@@ -71,7 +71,10 @@ app.post('/api/capture', async (req, res) => {
             // ─── STEALTH / INTERACTIVE PATH ───
             // Use launchPersistentContext with a local user-data dir.
             // This preserves cookies (CAPTCHA clearance) between runs and uses the stealth plugin.
-            const userDataDir = path.join(__dirname, 'user-data');
+            // Use a writable persistent location in the home directory
+            const userDataDir = path.join(os.homedir(), '.stealth-batch-shot-v2');
+            if (!fs.existsSync(userDataDir)) fs.mkdirSync(userDataDir, { recursive: true });
+
             persistentCtx = await stealthLauncher.launchPersistentContext(userDataDir, {
                 headless: false,
                 viewport: null, // Let page set viewport individually
