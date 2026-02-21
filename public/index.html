@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StealthBatchShot</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <h1>StealthBatchShot</h1>
+            </div>
+            <p>High-fidelity, full-page stealth screenshots</p>
+        </header>
+
+        <main class="main-content">
+            <div class="card">
+                <div class="input-group">
+                    <label>Target URLs</label>
+                    <div class="input-box" id="inputBox">
+                        <div id="chipContainer" class="chip-container"></div>
+                        <input type="text" id="urlInput" placeholder="Paste or type URLs and press Enter...">
+                    </div>
+                </div>
+
+                <div class="options-group">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="checkDesktop" checked>
+                        <span class="checkmark"></span>
+                        <span class="label">Desktop (1440px)</span>
+                    </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="checkMobile">
+                        <span class="checkmark"></span>
+                        <span class="label">Mobile (390px)</span>
+                    </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" id="checkStealth" checked>
+                        <span class="checkmark"></span>
+                        <span class="label">Stealth mode</span>
+                    </label>
+                </div>
+
+                <button id="captureBtn" class="primary-btn">Capture All</button>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <h3>Progress</h3>
+                    <span id="progressText" class="progress-text">0 / 0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="status-section" id="statusSection">
+                <h3>Capture Status</h3>
+                <div id="statusList" class="status-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

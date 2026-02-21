@@ -1,0 +1,41 @@
+{
+  "name": "stealthbatchshot",
+  "version": "1.0.0",
+  "description": "Batch full-page screenshots with stealth antibot protection",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "electron": "electron .",
+    "build:mac": "electron-builder --mac --dir"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "playwright": "^1.41.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "devDependencies": {
+    "electron": "^34.1.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.stealthbatchshot.app",
+    "productName": "StealthBatchShot",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": "dir"
+    },
+    "files": [
+      "main.js",
+      "server.js",
+      "public/**",
+      "node_modules/**",
+      "user-data/**",
+      "package.json"
+    ],
+    "extraFiles": [],
+    "asar": false
+  },
+  "author": "",
+  "license": "ISC"
+}

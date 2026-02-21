@@ -1,0 +1,7 @@
+node_modules/
+dist/
+user-data/
+*.png
+test*.js
+vh_test.html
+.DS_Store
