@@ -101,10 +101,19 @@ document.addEventListener('DOMContentLoaded', () => {
         validateRunButton();
     };
 
+    const resetBtn = document.getElementById('resetBtn');
+
     const validateRunButton = () => {
         const modeSelected = checkDesktop.checked || checkMobile.checked;
         captureBtn.disabled = urls.size === 0 || !modeSelected || isProcessing;
+        resetBtn.style.display = urls.size > 0 ? 'flex' : 'none';
     };
+
+    resetBtn.addEventListener('click', () => {
+        urls.clear();
+        renderChips();
+        validateRunButton();
+    });
 
     const stealthHint = document.getElementById('stealthHint');
 
@@ -134,11 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
         li.id = `job-${jobId.replace(/[^a-zA-Z0-9-]/g, '-')}`;
 
         const displayUrl = url.replace(/^https?:\/\//, '');
+        const now = new Date();
+        const timestamp = now.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
+            + ' ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
         li.innerHTML = `
             <div class="status-item-info">
                 <span class="status-item-url" title="${url}">${displayUrl}</span>
-                <span class="status-item-mode">${formatMode(mode)}</span>
+                <span class="status-item-mode">${timestamp}</span>
             </div>
             <div class="status-badge processing" id="badge-${li.id}">
                 <div class="spinner"></div>
@@ -172,7 +184,23 @@ document.addEventListener('DOMContentLoaded', () => {
             badge.appendChild(btn);
         } else if (status === 'success') {
             badge.className = 'status-badge success';
-            badge.innerHTML = `Success`;
+            badge.innerHTML = `✓ Show in Finder`;
+
+            // Make the whole row clickable to reveal file
+            const row = badge.closest('.status-item');
+            if (row && details) {
+                row.style.cursor = 'pointer';
+                row.title = details;
+                row.addEventListener('click', async () => {
+                    row.style.opacity = '0.6';
+                    await fetch('/api/reveal', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ filepath: details })
+                    });
+                    setTimeout(() => { row.style.opacity = '1'; }, 300);
+                });
+            }
         } else if (status === 'error') {
             badge.className = 'status-badge error';
             badge.innerHTML = `Failed`;

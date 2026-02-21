@@ -24,6 +24,22 @@ app.post('/api/continue/:jobId', (req, res) => {
     }
 });
 
+// Reveal a file in the system file manager (macOS Finder / Windows Explorer)
+app.post('/api/reveal', (req, res) => {
+    const { filepath } = req.body;
+    if (!filepath) return res.status(400).json({ error: 'No filepath provided' });
+
+    const { exec } = require('child_process');
+    const cmd = process.platform === 'darwin'
+        ? `open -R "${filepath}"`
+        : `explorer.exe /select,"${filepath.replace(/\//g, '\\')}"`;
+
+    exec(cmd, (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ ok: true });
+    });
+});
+
 // Pre-initialize stealth launcher once at startup (avoids double-attach & cache issues)
 let stealthLauncher = chromium;
 try {
