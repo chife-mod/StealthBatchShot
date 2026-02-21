@@ -70,6 +70,12 @@ body {
     font-size: 15px;
 }
 
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
 .card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
