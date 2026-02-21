@@ -106,6 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
         captureBtn.disabled = urls.size === 0 || !modeSelected || isProcessing;
     };
 
+    const stealthHint = document.getElementById('stealthHint');
+
+    const updateStealthHint = () => {
+        stealthHint.classList.toggle('visible', checkStealth.checked);
+    };
+
+    checkStealth.addEventListener('change', updateStealthHint);
+    updateStealthHint(); // set initial state
+
     [checkDesktop, checkMobile].forEach(cb => {
         cb.addEventListener('change', validateRunButton);
     });

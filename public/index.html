@@ -24,6 +24,7 @@
         </header>
 
         <main class="main-content">
+            <!-- Main card -->
             <div class="card">
                 <div class="input-group">
                     <label>Target URLs</label>
@@ -49,32 +50,35 @@
                         <span class="checkmark"></span>
                         <span class="label">Stealth mode</span>
                     </label>
-                    <div class="stealth-hint">
-                        <span class="stealth-hint-icon">ℹ️</span>
-                        <div class="stealth-hint-text">
-                            <strong>Stealth Mode</strong> — for sites with bot protection or CAPTCHA.<br>
-                            A browser window will open — move your mouse and close any pop-ups.<br>
-                            Complete any verification, then return here and click <strong>Continue</strong>.
-                        </div>
-                    </div>
-
-                    <button id="captureBtn" class="primary-btn">Capture All</button>
                 </div>
 
-                <div class="progress-section" id="progressSection">
-                    <div class="progress-header">
-                        <h3>Progress</h3>
-                        <span id="progressText" class="progress-text">0 / 0</span>
-                    </div>
-                    <div class="progress-bar-wrapper">
-                        <div class="progress-bar" id="progressBar"></div>
-                    </div>
-                </div>
+                <button id="captureBtn" class="primary-btn">Capture All</button>
+            </div>
 
-                <div class="status-section" id="statusSection">
-                    <h3>Capture Status</h3>
-                    <div id="statusList" class="status-list"></div>
+            <!-- Stealth hint — appears below the card when Stealth is checked -->
+            <div class="stealth-hint" id="stealthHint">
+                <span class="stealth-hint-icon">ℹ️</span>
+                <div class="stealth-hint-text">
+                    <strong>Stealth Mode</strong> — for sites with bot protection or CAPTCHA.<br>
+                    A browser window will open — move your mouse and close any pop-ups.<br>
+                    Complete any verification, then return here and click <strong>Continue</strong>.
                 </div>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-header">
+                    <h3>Progress</h3>
+                    <span id="progressText" class="progress-text">0 / 0</span>
+                </div>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="status-section" id="statusSection">
+                <h3>Capture Status</h3>
+                <div id="statusList" class="status-list"></div>
+            </div>
         </main>
     </div>
 
