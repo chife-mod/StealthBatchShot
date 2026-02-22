@@ -83,6 +83,28 @@ app.post('/api/capture', async (req, res) => {
     let persistentCtx;
 
     try {
+        const getExecutablePath = () => {
+            const paths = {
+                darwin: [
+                    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                    '/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',
+                    '/Applications/Brave Browser.app/Contents/MacOS/Brave Browser'
+                ],
+                win32: [
+                    'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+                    'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+                    'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe'
+                ]
+            };
+            const checkPaths = paths[process.platform] || [];
+            for (const p of checkPaths) {
+                if (fs.existsSync(p)) return p;
+            }
+            return undefined; // If undefined, Playwright will try its default bundle
+        };
+
+        const executablePath = getExecutablePath();
+
         if (stealth) {
             // ─── STEALTH / INTERACTIVE PATH ───
             // Use launchPersistentContext with a local user-data dir.
@@ -93,6 +115,7 @@ app.post('/api/capture', async (req, res) => {
 
             persistentCtx = await stealthLauncher.launchPersistentContext(userDataDir, {
                 headless: false,
+                executablePath,
                 viewport: null, // Let page set viewport individually
                 args: ['--disable-blink-features=AutomationControlled']
             });
@@ -100,6 +123,7 @@ app.post('/api/capture', async (req, res) => {
             // ─── NORMAL PATH ───
             browser = await chromium.launch({
                 headless: true,
+                executablePath,
                 args: ['--window-size=1920,1080']
             });
         }
