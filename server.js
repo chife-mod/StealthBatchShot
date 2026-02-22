@@ -41,12 +41,38 @@ app.post('/api/reveal', (req, res) => {
 });
 
 // Pre-initialize stealth launcher once at startup (avoids double-attach & cache issues)
+// NOTE: We explicitly list evasions EXCLUDING 'chrome.app' because electron-builder
+// treats directories ending in .app as macOS application bundles and strips them from
+// the packaged DMG, causing "Plugin dependency not found" at runtime.
 let stealthLauncher = chromium;
+let stealthAvailable = false;
 try {
     const { chromium: extraChromium } = require('playwright-extra');
-    const stealth = require('puppeteer-extra-plugin-stealth')();
+    const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+    const stealth = StealthPlugin({
+        enabledEvasions: new Set([
+            'chrome.csi',
+            'chrome.loadTimes',
+            'chrome.runtime',
+            'defaultArgs',
+            'iframe.contentWindow',
+            'media.codecs',
+            'navigator.hardwareConcurrency',
+            'navigator.languages',
+            'navigator.permissions',
+            'navigator.plugins',
+            'navigator.vendor',
+            'navigator.webdriver',
+            'sourceurl',
+            'user-agent-override',
+            'webgl.vendor',
+            'window.outerdimensions'
+        ])
+    });
     extraChromium.use(stealth);
     stealthLauncher = extraChromium;
+    stealthAvailable = true;
+    console.log('Stealth plugin initialized successfully (chrome.app evasion skipped for DMG compatibility)');
 } catch (e) {
     console.error('Stealth plugin not available, falling back to vanilla Chromium:', e.message);
 }
