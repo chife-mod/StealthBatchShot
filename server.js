@@ -131,6 +131,14 @@ app.post('/api/capture', async (req, res) => {
 
         const executablePath = getExecutablePath();
 
+        if (!executablePath) {
+            sendMsg({ type: 'fatal', data: { error: 'No supported browser found. Please install Google Chrome, Microsoft Edge, or Brave Browser to use this app.' } });
+            res.end();
+            return;
+        }
+
+        console.log(`Using browser: ${executablePath}`);
+
         if (stealth) {
             // ─── STEALTH / INTERACTIVE PATH ───
             // Use launchPersistentContext with a local user-data dir.
